@@ -16,13 +16,13 @@ class MeuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //para sumir marca d'agua
       debugShowCheckedModeBanner: false,
       title: 'Game Explorer',
 
-      useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
-
+      //O tema do app
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
@@ -30,6 +30,7 @@ class MeuApp extends StatelessWidget {
         useMaterial3: true,
       ),
 
+      //linkando o inicio do app a esse tala
       home: const TelaInicio(),
     );
   }
@@ -40,16 +41,38 @@ class TelaInicio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Apartir daqui começa a telaInicio
     return Scaffold(
+      //Barra superior do app
       appBar: AppBar(
         title: const Text('Game Explorer'),
         centerTitle: true,
       ),
+      //Aqui deve ficar o menu lateral-------------------------------------------------
+      endDrawer: Drawer( //endDrawe é para ele ficar na direita(drawer fica só na esquerda)
+        child: ListView(
+          children: [
+            //Cabeçario barra leteral
+            const DrawerHeader(
+              child: Text("Cabeçario"),
+            ),
 
+            //TILE 1 da barra leteral
+            ListTile(
+              title: const Text("App Jogos"),
+            )
+          ],
+        ),
+      ),
+
+      //Corpo do aplicativo
       body: const SingleChildScrollView(
         child: Padding(
+          //Padding nos elementos do body
           padding: EdgeInsets.all(20),
+          //Itens alinhados em coluna
           child: Column(
+            //Icone do controle
             children: [
               Icon(
                 Icons.sports_esports,
@@ -58,6 +81,7 @@ class TelaInicio extends StatelessWidget {
 
               SizedBox(height: 16),
 
+              //Texto to controle
               Text(
                 'Bem-vindo ao Game Explorer!',
                 textAlign: TextAlign.center,
@@ -69,6 +93,7 @@ class TelaInicio extends StatelessWidget {
 
               SizedBox(height: 10),
 
+              //Texto detalahdo do controle
               Text(
                 'Explore jogos, descubra novas aventuras '
                 'e organize seus conteúdos favoritos.',
@@ -79,7 +104,7 @@ class TelaInicio extends StatelessWidget {
               ),
 
               SizedBox(height: 30),
-
+              //Widget 1(Explorar)
               CardJogo(
                 icone: Icons.explore,
                 titulo: 'Explorar',
@@ -88,7 +113,7 @@ class TelaInicio extends StatelessWidget {
               ),
 
               SizedBox(height: 12),
-
+              //Widget 2(Favoritos)
               CardJogo(
                 icone: Icons.favorite,
                 titulo: 'Favoritos',
@@ -97,7 +122,7 @@ class TelaInicio extends StatelessWidget {
               ),
 
               SizedBox(height: 12),
-
+              //Widget 3(Conquista)
               CardJogo(
                 icone: Icons.emoji_events,
                 titulo: 'Conquistas',
