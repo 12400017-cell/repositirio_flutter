@@ -16,18 +16,22 @@ class TelaPersonalizarPerfil extends StatefulWidget {
 
 class _TelaPersonalizarPerfilState
     extends State<TelaPersonalizarPerfil> {
-  String estiloSelecionado = 'Clássico';
+  //estiloSelecionado guarda qual opção esta selecinado nos ChoiceChip
+  String estiloSelecionado = 'Clássico'; //valor defolt
+  //variavel de tamanho fonte nome
   double tamanhoNome = 24;
   bool mostrarFoto = true;
   bool mostrarDescricao = true;
   bool mostrarLocalizacao = true;
-
+  
+  //Lista de estilos para diminuir o nome do dódigo(definindo os estados possiveis)
   final List<String> estilos = [
     'Clássico',
     'Moderno',
     'Colorido',
   ];
-
+  
+  //Cores relacionadas a cada estado
   Color get corCartao {
     if (estiloSelecionado == 'Moderno') {
       return Colors.blueGrey.shade100;
@@ -40,6 +44,7 @@ class _TelaPersonalizarPerfilState
     return Colors.white;
   }
 
+  //Borda relacionada a cada estado
   double get bordaCartao {
     if (estiloSelecionado == 'Moderno') {
       return 5;
@@ -170,6 +175,10 @@ class _TelaPersonalizarPerfilState
               spacing: 8,
               runSpacing: 8,
               children: estilos.map((estilo) {
+                //Ele é o que dá os quadrados de opçaõ
+                //O que diferencia ele de um botão é: 
+                //Um botão vai deixar de ser precinado ao fim de sua ação
+                //choceship serve para ser intermitentemente ligado
                 return ChoiceChip(
                   label: Text(estilo),
                   selected: estiloSelecionado == estilo,
