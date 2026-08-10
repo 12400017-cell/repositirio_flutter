@@ -198,11 +198,13 @@ class _TelaPersonalizarPerfilState
               descricao: '${tamanhoNome.toInt()} pixels',
             ),
             Slider(
+              //define o valor atual de slider baseado na variave tamanho nome
               value: tamanhoNome,
               min: 16,
               max: 36,
               divisions: 10,
               label: tamanhoNome.toInt().toString(),
+              //atualiza a variavel que será modificada
               onChanged: (novoValor) {
                 setState(() {
                   tamanhoNome = novoValor;
@@ -233,6 +235,7 @@ class _TelaPersonalizarPerfilState
                     },
                   ),
                   const Divider(height: 1),
+                  //
                   SwitchListTile(
                     title: const Text('Mostrar descrição'),
                     subtitle: const Text(
