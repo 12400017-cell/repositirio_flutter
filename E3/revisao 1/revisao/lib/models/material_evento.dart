@@ -18,8 +18,12 @@ class MaterialEvento {
   String get nomeNormalizado => nome.trim().toLowerCase();
 
   String get situacao {
-    // TODO 3: classifique o material conforme quantidade e mínimo.
-    // Verifique primeiro se a quantidade é zero.
+    // (FEITO)TODO 3: classifique o material conforme quantidade e mínimo.
+    // Verifique primeiro se a quantidade é zero
+    if(quantidade <= 0) return "Escreve um valor maior que 0";
+    if(quantidade < minimo) return "Escreva uma quantidade igual ou maior que o minimo";
+    if(minimo > quantidade) return "Escreve um valor minimo manor ou igual a quantidade";
+    if(minimo <=0) return "Escreva um minimo maior que 0";
     return 'Situação a implementar';
   }
 
