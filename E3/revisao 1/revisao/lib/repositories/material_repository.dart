@@ -25,12 +25,24 @@ class MaterialRepository {
   }
 
   Future<void> atualizar(MaterialEvento material) async {
-    // TODO 6: Atualize somente o registro cujo ID está em material.id.
-    throw UnimplementedError();
+    // (FEITO)TODO 6: Atualize somente o registro cujo ID está em material.id.
+    final db = await service.database;
+    db.update(
+      'materiais', 
+      material.toMap(), //MATERIAL VIRA LISTA
+      where: 'id = ?',
+      whereArgs: [material.id]
+    );
   }
 
   Future<void> excluir(int id) async {
-    // TODO 7: Exclua somente o registro cujo ID foi recebido.
-    throw UnimplementedError();
+    // (FEITO)TODO 7: Exclua somente o registro cujo ID foi recebido.
+    final db = await service.database;
+
+    db.delete(
+      'materiais',
+      where: 'id = ?',
+      whereArgs:  [id]
+    );
   }
 }
