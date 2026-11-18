@@ -1,0 +1,59 @@
+import '../services/database_service.dart';
+
+// Repository: concentra as consultas e alterações dos documentos no SQLite.
+class ImpressaoRepository {
+  final DatabaseService service;
+  ImpressaoRepository(this.service);
+
+  //Ordem tava DESC ao invez de ascend, o que fazia a ordem fica do mais recente ao mais velho
+  //ao invez do mais velho no começo e o mais recente no final
+  Future<List<Map<String, Object?>>> listar() async {
+    final db = await service.banco;
+    return db.query('documentos', orderBy: 'id ASC'); //orderBy: 'id DESC'
+  }
+
+  Future<void> salvar({int? id, required String nome,
+    required int paginas, required int copias}) async {
+    final db = await service.banco;
+    final dados = <String, Object?>{
+      'nome': nome.trim(), 'paginas': paginas, 'copias': copias,
+    };
+    if (id == null) {
+      await db.insert('documentos', {...dados, 'impresso': 0});
+    } else {
+      await db.update('documentos', dados, where: 'id = ?', whereArgs: [id]);
+    }
+  }
+
+  Future<void> alternarImpressao(int id, bool estavaImpresso) async {
+    final db = await service.banco;
+    final novoValor = estavaImpresso ? 0 : 1;
+    //O erro esta id <> ?
+    //A linha segunte atualiza a info do banco de dados
+    //await serve para parar tudo para atualizar o banco de dados
+    //db.update(documento{"impreso": novoValor})
+    await db.update(
+      'documentos', {'impresso': novoValor},
+      //were serve para saber o que atualizar(id = ? significa mudar o valor não especificado do ID)
+      //whereargs serve para dar o valor que sera atualizado
+      where: 'id = ?', whereArgs: [id]
+    );
+  }
+
+  Future<void> excluir(int id) async {
+    final db = await service.banco;
+    await db.delete('documentos', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // Restaura somente os exemplos desta atividade; a tela pede confirmação.
+  Future<void> restaurarAmostras() async {
+    final db = await service.banco;
+    await db.transaction((txn) async {
+      await txn.delete('documentos');
+      await txn.delete('sqlite_sequence', where: 'name = ?', whereArgs: ['documentos']);
+      for (final documento in DatabaseService.amostras) {
+        await txn.insert('documentos', documento);
+      }
+    });
+  }
+}
