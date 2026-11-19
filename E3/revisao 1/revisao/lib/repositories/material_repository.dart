@@ -14,14 +14,28 @@ class MaterialRepository {
   }
 
   Future<bool> existeNome(String nome, {int? ignorarId}) async {
-    // TODO 4: consulte o nome normalizado no banco.
+    // (FEITO)TODO 4: consulte o nome normalizado no banco.
     // Quando ignorarId for informado, exclua esse ID da busca de duplicidade.
-    return false;
+    final db = await service.database;
+    final nomeNormalizado = nome.trim().toLowerCase();
+    final resultado = await db.query(
+      'materiais',
+      where: ignorarId == null
+      ? 'nome_normalizado = ?'
+      :'nome_normalizado = ? AND ind <> ?',
+      whereArgs: ignorarId == null
+      ? [nomeNormalizado]
+      :[nomeNormalizado, ignorarId],
+    );
+
+    return resultado.isNotEmpty;
   }
 
   Future<void> inserir(MaterialEvento material) async {
-    // TODO 5: Insira material.toMap() na tabela materiais.
-    throw UnimplementedError();
+    //(FEITO)TODO 5: Insira material.toMap() na tabela materiais.
+    final db = await service.database;
+
+    await db.insert('materiais', material.toMap());
   }
 
   Future<void> atualizar(MaterialEvento material) async {
